@@ -1,26 +1,16 @@
-const profileDataArgs = process.argv.slice(2, process.argv.length);
-//const name = profileDataArgs[0];
-//const github = profileDataArgs[1]; the following line of code will replace lines 2 and 3
+//the following line enables the fs module
+const fs = require("fs");
+
+//the following line imports our local module using relative pathing. In this case our local module is our generatePage function
+const generatePage = require("./src/page-template.js");
+
+const profileDataArgs = process.argv.slice(2);
+
 const [name, github] = profileDataArgs;
 
-// backtics allow you to run template literals. Another advantage is that spaces inside backtics will register like in a word processor
-const generatePage = (name, github) => {
-  return `
-  <!DOCTYPE html> 
-  <html lang="en"> 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Portfolio Demo</title>
-  </head>
+//the following actually generates a file. 1st argument: name, 2nd argument: data (content), 3rd argument is error
+fs.writeFile("./index.html", generatePage(name, github), (err) => {
+  if (err) throw new Error(err);
 
-  <body>
-    <h1>${name}</h1>
-    <h2><a href="https://github.com/${github}">Github</a></h2>
-  </body>
-  </html>
-  `;
-};
-console.log(name, github);
-console.log(generatePage(name, github));
+  console.log("Portfolio complete! Check out index.html to see the output!");
+});
